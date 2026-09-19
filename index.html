@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>دلفري دارفور</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#d4af37">
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3774/3774089.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -507,6 +512,22 @@ async function adminDelete(col,id){
 let _oldProg = null;
 
 let prog=0; let iv=setInterval(()=>{ prog+=9; fill.style.width=prog+'%'; let lp=document.getElementById('loadPct'); if(lp) lp.textContent=prog+'%'; if(prog>=100){ clearInterval(iv); setTimeout(()=>{ splash.style.display='none'; sLogin.style.display='block'; initFirebase(); let d=document.getElementById('dot'); function upd(){ let on=navigator.onLine; d.style.background=on?'#22c55e':'#ef4444'; } window.addEventListener('online',upd); window.addEventListener('offline',upd); upd(); },400); }},180);
+</script>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  let btn=document.createElement('button');
+  btn.textContent='📲 ثبّت التطبيق';
+  btn.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#facc15;color:#000;border:none;border-radius:100px;padding:14px 28px;font-weight:900;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.5)';
+  btn.onclick=()=>{deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{btn.remove()})};
+  document.body.appendChild(btn);
+  setTimeout(()=>btn.remove(),15000);
+});
 </script>
 </body>
 </html>
